@@ -1,0 +1,18 @@
+{
+  "agent": {
+    "run_as_user": "root"
+  },
+  "logs": {
+    "logs_collected": {
+      "files": {
+        "collect_list": [
+          {
+            "file_path": "/home/ec2-user/headless-wallet.log",
+            "log_group_name": "headless-wallet-log",
+            "log_stream_name": "wallet-client-{instance_id}"
+          }
+        ]
+      }
+    }
+  }
+}

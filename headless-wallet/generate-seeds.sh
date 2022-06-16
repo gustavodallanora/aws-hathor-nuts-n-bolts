@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ $# -eq 0 ]; then
    echo "Missing wallet list parameter!"
-   echo "Usage: ./create-seeds wallet1,wallet2,wallet"
+   echo "Usage: ./generate-seeds.sh wallet1,wallet2,walletN"
    exit 1
 fi
 
@@ -27,3 +27,10 @@ echo "}" >> raw_seeds
 echo ""
 echo "Seeds created (words truncated):"
 cat raw_seeds | cut -c -80
+
+aws secretsmanager create-secret --name ${SEEDS_SECRET_NAME} --secret-string "`cat ./raw_seeds`"
+
+echo "Secret ${SEEDS_SECRET_NAME} created..."
+
+echo "Secret ${SEEDS_SECRET_NAME} contents (truncated):"
+aws secretsmanager get-secret-value --secret-id ${SEEDS_SECRET_NAME} --query SecretString --output text | cut -c -40

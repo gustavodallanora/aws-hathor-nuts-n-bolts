@@ -28,8 +28,13 @@ echo ""
 echo "Seeds created (words truncated):"
 cat raw_seeds | cut -c -80
 
-aws secretsmanager create-secret --name ${SEEDS_SECRET_NAME} --secret-string "`cat ./raw_seeds`"
+aws ssm put-parameter --name ${WALLETS_PARAM_NAME} --value $1 --type "String" --overwrite
+echo "Keys parameter ${WALLETS_PARAM_NAME} created..."
 
+echo "Keys parameters ${WALLETS_PARAM_NAME} contents:"
+aws ssm get-parameter --name ${WALLETS_PARAM_NAME}
+
+aws secretsmanager create-secret --name ${SEEDS_SECRET_NAME} --secret-string "`cat ./raw_seeds`"
 echo "Secret ${SEEDS_SECRET_NAME} created..."
 
 echo "Secret ${SEEDS_SECRET_NAME} contents (truncated):"
